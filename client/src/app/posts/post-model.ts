@@ -1,5 +1,5 @@
 export interface PostModel {
-    id:string;
+    _id:string;
     title:string;
     content:string;
 }

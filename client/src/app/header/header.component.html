@@ -1,1 +1,9 @@
-<mat-toolbar color="primary">My messages</mat-toolbar>
+<mat-toolbar color="primary">
+    <a [routerLink]="['/']"><span>My messages</span></a> 
+    <span class="spacer"></span>
+    <ul>
+        <li>
+            <a mat-button [routerLink]="['/create']" routerLinkActive="mat-accent">Create message</a>
+        </li>
+    </ul>
+</mat-toolbar>
