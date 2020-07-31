@@ -18,7 +18,8 @@ export class PostService {
         return {
           title: post.title,
           content: post.content,
-          _id: post._id
+          _id: post._id,
+          imagePath: post.imagePath
         };
       });
     }))
@@ -31,16 +32,14 @@ export class PostService {
     );
     return [...this.posts];
   }
-  addPost(title: string, content: string) {
-    const post: PostModel = {
-      _id: null,
-      title: title,
-      content: content
-    };
-    this.http.post<{message: string, postId: string}>('/api/posts', post).subscribe(
+  addPost(title: string, content: string, image:File) {
+    const postData = new FormData();
+    postData.append("title",title);
+    postData.append("content",title);
+    postData.append("image",image,title);
+    this.http.post<{message: string, post: PostModel}>('/api/posts', postData).subscribe(
       (responseData) => {
-        const postId = responseData.postId;
-        post._id = postId;
+        const post: PostModel = {_id:responseData.post._id, title: title, content: content, imagePath:responseData.post.imagePath};
         this.posts.push(post);
         this.postsUpdate.next([...this.posts]);
         this.router.navigate(["/"]);
@@ -64,7 +63,7 @@ export class PostService {
     );
   }
   updatePost(id: string, title: string, content: string) {
-    const post: PostModel = {_id: id, title: title, content: content};
+    const post: PostModel = {_id: id, title: title, content: content,imagePath:null};
     this.http.put('/api/posts/' + id, post)
     .subscribe(res =>{
       const updatedPosts = [...this.posts];

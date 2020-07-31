@@ -1,5 +1,5 @@
 const express = require('express');
-
+const path = require('path');
 const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -19,6 +19,7 @@ mongoose.connect('mongodb://mongo:27017/test_db',{
 app.use(cors());
 app.use(bodyParser.json());
 app.use(postsRoutes);
+app.use('/images',express.static(path.join("/images")));
 app.listen(5000,err=>{
     console.log("listening on port 5000");
 });
